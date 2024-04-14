@@ -1,0 +1,21 @@
+on: pull_request
+
+name: Validate
+
+jobs:
+  conftest:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    steps:
+    - uses: actions/checkout@v4
+
+    - run: |
+        LATEST_VERSION=$(wget -O - "https://api.github.com/repos/open-policy-agent/conftest/releases/latest" | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/' | cut -c 2-)
+        ARCH=$(arch)
+        SYSTEM=$(uname)
+        wget "https://github.com/open-policy-agent/conftest/releases/download/v${LATEST_VERSION}/conftest_${LATEST_VERSION}_${SYSTEM}_${ARCH}.tar.gz"
+        tar xzf conftest_${LATEST_VERSION}_${SYSTEM}_${ARCH}.tar.gz
+
+    - run: ./conftest fmt --check manifests/
+
+    - run: ./conftest test manifests/
