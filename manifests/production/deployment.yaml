@@ -12,6 +12,8 @@ spec:
       labels:
         app: django-app
     spec:
+      securityContext:
+        runAsNonRoot: true
       containers:
       - name: django-app
         image: your-django-app-image:latest
