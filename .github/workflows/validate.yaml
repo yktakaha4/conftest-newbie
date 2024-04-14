@@ -16,6 +16,6 @@ jobs:
         wget "https://github.com/open-policy-agent/conftest/releases/download/v${LATEST_VERSION}/conftest_${LATEST_VERSION}_${SYSTEM}_${ARCH}.tar.gz"
         tar xzf conftest_${LATEST_VERSION}_${SYSTEM}_${ARCH}.tar.gz
 
-    - run: ./conftest fmt --check manifests/
+    - run: ./conftest fmt --check policy/
 
     - run: ./conftest test manifests/
